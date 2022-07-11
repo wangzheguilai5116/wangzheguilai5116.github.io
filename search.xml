@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>My New Post</title>
+      <link href="/2022/07/08/My-New-Post/"/>
+      <url>/2022/07/08/My-New-Post/</url>
+      
+        <content type="html"><![CDATA[<h2 id="关系理论："><a href="#关系理论：" class="headerlink" title="关系理论："></a>关系理论：</h2><h4 id="1-候选键：若关系中的某一属性组的值能唯一地标识一个元组，则称该属性组为候选键。"><a href="#1-候选键：若关系中的某一属性组的值能唯一地标识一个元组，则称该属性组为候选键。" class="headerlink" title="1.候选键：若关系中的某一属性组的值能唯一地标识一个元组，则称该属性组为候选键。"></a>1.候选键：若关系中的某一属性组的值能唯一地标识一个元组，则称该属性组为候选键。</h4><blockquote><p>R&lt;U,F&gt;,U&#x3D;(A,B,C),F&#x3D;{AB–&gt;C,C–&gt;B},求候选码。</p><p>因为A只出现在左边，所以A一定是候选键。A的闭包还是A，则对A进行组合，可以和B,C进行组合。</p><p>首先看AB，AB本身自包AB，而AB–&gt;C，所以AB的闭包是ABC&#x3D;U。</p><p>再看AC，AC本身自包AC，而C–&gt;B，所以AC的闭包是ABC&#x3D;U。</p><p>因为AB,AC的闭包都是ABC，也就是U，所以候选键是AB，AC。</p></blockquote><h3 id="2-最小依赖集："><a href="#2-最小依赖集：" class="headerlink" title="2.最小依赖集："></a>2.最小依赖集：</h3><blockquote><p>定义：如果函数依赖集F满足下列条件，则称F为一个极小函数依赖集，亦称为最小依赖集或最小覆盖。<br>    (1)、F中任一函数依赖右部仅含有一个属性。<br>    (2)、F中不存在这样的函数依赖 X→A，使得F与F-{X→A} 等价。<br>    (3)、F中不存在这样的函数依赖X→A，X有真子集Z使得F-{X→A}⋃{Z→A} 与F等价。</p></blockquote><p>计算方法：</p><blockquote><p>1、首先，先利用函数依赖的分解性，将函数依赖集中右部不为单个属性的分解为单属性。</p><p>2、对于经过第1步筛选后的函数依赖集F中的每一个函数依赖X→A，进行以下操作：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">2.1、将X→A从函数依赖中剔除</span><br><span class="line">2.2、基于剔除后的函数依赖，计算属性X的闭包，看其是否包含了A，若是，则该函数依赖是多余的(这里体现出前面说的等价，因为如果基于化简后的函数依赖依赖，计算X的闭包依然包含A，则说明A可以由其他依赖推出，X→A不是必须的)，可以删除，否则不能删除</span><br></pre></td></tr></table></figure><p>3、对于经过第2步筛选后的函数依赖集F中每个左部不为单个属性的函数依赖AB→Y，进行以下操作：<br>我们约定，经过第二步筛选后的函数依赖集记为F1，经过第三步处理后的函数依赖集为F2。</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">3.1、去除A，得B→Y，得F2，基于F1和F2计算属性B的闭包，如果二者相等，则说明它们是等价的，A可以去除；如果不相等，则A不能去除。</span><br><span class="line">3.2、去除B，得A→Y，得F2，基于F1和F2计算属性A的闭包，如果二者相等则说明它们是等价的，B可以去除；如果不相等，则B不能去除。</span><br></pre></td></tr></table></figure></blockquote><p>例子：关系模式R(U，F)中，U&#x3D;{A，B，C，D，E，G}，F&#x3D;{B→D，DG→C,BD →E,AG→B,ADG →BC}；求F的最小函数依赖集。</p><p><img src="C:\Users\26518\AppData\Local\Temp\1655684799180.png" alt="1655684799180"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655684827201.png" alt="1655684827201"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655684843353.png" alt="1655684843353"></p><h3 id="3-分解为3NF："><a href="#3-分解为3NF：" class="headerlink" title="3.分解为3NF："></a>3.分解为3NF：</h3><p><img src="https://img-blog.csdn.net/20180522105347367" alt="img"> </p><h3 id="4-分解为BCNF："><a href="#4-分解为BCNF：" class="headerlink" title="4.分解为BCNF："></a>4.分解为BCNF：</h3><p><img src="https://img-blog.csdn.net/20180522142103922" alt="img"> </p><h2 id="事务并发控制"><a href="#事务并发控制" class="headerlink" title="事务并发控制"></a>事务并发控制</h2><p>锁：<br>    排它锁（X锁）：写锁，一个事务获取了写锁，则其他事务都不能再加任何类型的锁，直到锁释放。<br>    共享锁（S锁）：读锁，一个事务获取了读锁，其他事务能加读锁，不能加写锁。</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">（1） 三级封锁协议：</span><br><span class="line"> 1、一级封锁协议：事务在修改数据前先加写锁，直到事务结束。（防止修改）</span><br><span class="line"> 2、二级封锁协议：在一级的基础上，事务读数据先加读锁，读完释放读锁。（防止读脏）</span><br><span class="line"> 3、三级封锁协议：在一级的基础上，事务读数据先加读锁，直到事务结束释放。（防止不可重复读）</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">（2）两阶段锁协议：</span><br><span class="line">1.在对任何数据进行读、写操作之前，事务首先要获得对该数据的封锁。</span><br><span class="line">2.在释放一个封锁之后，事务不再获得任何其他封锁</span><br></pre></td></tr></table></figure><p>习题：</p><p><img src="C:\Users\26518\AppData\Local\Temp\1655686732576.png" alt="1655686732576"> </p><blockquote><p><strong>对于每对事务Ti和Tj，如果Tj读取了由Ti所写的数据项，则Ti应先于Tj提交。我们把这样的调度称为可恢复调度。相反，如果在调度中，Tj读取了Ti写入的值，而且先于Ti执行提交操作，那么这个调度室不可恢复的。</strong> </p></blockquote><h2 id="数据库恢复"><a href="#数据库恢复" class="headerlink" title="数据库恢复"></a>数据库恢复</h2><p><img src="C:\Users\26518\AppData\Local\Temp\1655688590640.png" alt="1655688590640"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655688632452.png" alt="1655688632452"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655688808300.png" alt="1655688808300"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655688839031.png" alt="1655688839031"></p><p><img src="C:\Users\26518\AppData\Local\Temp\1655689457535.png" alt="1655689457535"></p><h3 id="关系代数："><a href="#关系代数：" class="headerlink" title="关系代数："></a>关系代数：</h3><blockquote><p>1.选择(selection)运算：σF( R ) &#x3D; { t | t∈R ∧ F(t) &#x3D; ‘真’ }如：σ(Sex&#x3D;‘男’ ∧ Age&gt;18)( T )</p><p>2.投影(projection)运算：∏A( R ) &#x3D; { t[A]| t∈R }，如 ∏Name,Age( T )</p><p>3.连接：</p><p>（1）等值连接：R.A &#x3D; S.B(A、B属性名可不同也可以相同)，<strong>语法：R ⋈AθBS &#x3D; { tr ⌒ ts | tr ∈ R ∧ ts ∈ S ∧ tr[A] &#x3D; ts[B] }</strong> </p><p>（2）自然连接：R.A &#x3D; S.A(必须有相同的属性名且域相同才可以进行自然连接) <strong>语法：R ⋈S &#x3D; { tr ⌒ ts | tr ∈ R ∧ ts ∈ S ∧ tr[A] &#x3D; ts[A] }</strong></p><p>4.除法： 除法运算需满足的条件：设有关系R(X，Y)、S(Y，Z)，其中X，Y，Z为属性集合，R中的Y与S中的Y可以有不同的属性名，但对应的属性组必须来自同一域 </p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 大家好 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的第一篇博客</title>
+      <link href="/2022/07/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"/>
+      <url>/2022/07/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> hhh </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2022/07/08/hello-world/"/>
+      <url>/2022/07/08/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
